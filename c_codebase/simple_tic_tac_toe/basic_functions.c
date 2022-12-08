@@ -1,7 +1,9 @@
 /*******check validation of the player or computer turn******/
+time_t t;
 int check_valid(int p)
 
 {
+    srand((unsigned) time(&t));
     int c;
     if(p%2==0)
       {
