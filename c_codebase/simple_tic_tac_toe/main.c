@@ -62,7 +62,7 @@ int main()
             player--;
             getch();
         }
-        i = checkwin();
+        i = checkBoardState(square);
 
         player++;
     } while (i == -1);
@@ -87,7 +87,7 @@ FUNCTION TO RETURN GAME STATUS
 O GAME IS OVER AND NO RESULT
  **********************************************/
 
-//int checkwin()//outsourced to the other file
+//int checkBoardState(square)//outsourced to the other file
 //{
 //    if (square[1] == square[2] && square[2] == square[3])
 //        return 1;

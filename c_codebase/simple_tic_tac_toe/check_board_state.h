@@ -1,5 +1,5 @@
 
-int checkwin()
+int checkBoardState(char* square)
 {
     if (square[1] == square[2] && square[2] == square[3])
         return 1;
