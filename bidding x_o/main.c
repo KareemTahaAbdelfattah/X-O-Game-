@@ -5,7 +5,7 @@ void Display_board();
 int CheckFreespaces(void);
 void play_board(int); // first player is x
 int bidding_board();
-char box[10]={'1','2','3','4','5','6','7','8','9'};
+char box[9]={'1','2','3','4','5','6','7','8','9'};
 
 int player1_count =100;
 int player2_count = 100;
