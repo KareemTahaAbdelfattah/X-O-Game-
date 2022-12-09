@@ -1,2 +1,4 @@
-c_codebase/simple_tic_tac_toe/dont_upload_this.c
-c_codebase/simple_tic_tac_toe/source_dont_upload.c
+c_codebase/simple_tic_tac_toe/source_dont_upload.cpp
+c_codebase/simple_tic_tac_toe/conio.h
+c_codebase/simple_tic_tac_toe/a.out
+.vscode/
