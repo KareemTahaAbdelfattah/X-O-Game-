@@ -1,24 +1,4 @@
 
-void Display_board()
-{
-
-    printf("\n\n\tTic Tac Toe\n\n");
-
-    printf("Player 1 (X) -VS- Player 2 (O)\n\n");
-    printf("player 1 bid (%d) vs player 2 bid (%d)\n\n",player1_count,player2_count);
-    printf("     |     |     \n");
-    printf(" %c   | %c   | %c   \n",box[1],box[2],box[3]);
-    printf("_____|_____|_____\n");
-    printf("     |     |      \n");
-    printf(" %c   | %c   | %c   \n",box[4],box[5],box[6]);
-    printf("_____|_____|_____\n");
-    printf("     |     |      \n");
-    printf(" %c   | %c   | %c   \n",box[7],box[8],box[9]);
-    printf("_____|_____|_____\n");
-    printf("     |     |      \n");
-
-
-}
 void play_board(int player){
 
     char letter;
@@ -32,7 +12,7 @@ void play_board(int player){
 do{
     printf("player %d: please enter a position \n",player);
     scanf("%d",&position);
-    if(box[position]=='X'|| box[position]=='O'){
+    if(box[position-1]=='X'|| box[position-1]=='O'){
         printf("the position is already taken\n");
         flag=1;
     }else{
@@ -46,7 +26,7 @@ do{
                 case 7:
                 case 8:
                 case 9:
-                box[position] = letter;
+                box[position-1] = letter;
                 Display_board();
                 flag=0;
                 break;
@@ -94,4 +74,73 @@ else{
 }
 
 }
+
+int check()
+{
+    if(box[0]==box[1] && box[1]==box[2]){
+        if(box[0]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+    }
+   else if(box[3]==box[4] && box[4]==box[5]){
+        if(box[3]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+   }
+                        // horizontal match
+    else if (box[6]==box[7] && box[7]==box[8]){
+        if(box[6]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+    }
+
+    else if (box[0]==box[3] && box[3]==box[6]){
+        if(box[0]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+    }
+
+    else if(box[1]==box[4] && box[4]==box[7]){
+        if(box[1]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+    }           // vertical match
+    else if(box[2]==box[5] && box[5]==box[8]){
+        if(box[2]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+    }
+
+    else if(box[0]==box[4] && box[4]==box[8]){
+        if(box[0]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+    }
+    else if(box[2]==box[4] && box[4]==box[6]) {
+        if(box[2]=='X'){
+            return 1; //player 1
+        }else{
+            return 2; //player 2
+        }
+    }          //diagonal match
+    else
+        return -1;
+
+
+}
+
 
