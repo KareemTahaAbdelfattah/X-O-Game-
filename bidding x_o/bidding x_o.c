@@ -71,6 +71,7 @@ play_board(2);
 }
 else{
 // equal numbers
+    printf("\nbidding numbers are equal please renter the numbers\n");
 }
 
 }
