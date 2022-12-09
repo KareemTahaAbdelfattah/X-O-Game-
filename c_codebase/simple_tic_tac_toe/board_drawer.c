@@ -1,5 +1,0 @@
-
-
-void boardDrawer(){
-	system("cls");
-}
