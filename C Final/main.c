@@ -1,4 +1,174 @@
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+
+int checkwin();
+int check_valid(int p);
+void board();
+int isEmpty(char arr[]);
+void play_board(int); // first player is x
+int bidding_board();
+
+char square[10] = {'0','1','2','3','4','5','6','7','8','9'};
+
+int player_bidding = 0;
+int player1_count = 100;
+int player2_count = 100;
+int op = 0;
+
+/* Generate a random number structure */
+time_t t;
+
+int main(){
+    /* Generate a random number initialization */
+    srand((unsigned) time(&t));
+    int choice, player = 1, i = 0, c = 0;
+
+    system("cls");
+    printf("\n\n\tTic Tac Toe\n\n");
+    printf("Choose mode of Game :- \n");
+    printf("(1) ----->     Player Vs Player       <------ \n");
+    printf("(2) -----> Player Vs Player (Bidding) <------ \n");
+    printf("(3) -----> Player Vs Computer (Easy)  <------ \n");
+    scanf("%d", &op);
+    while(op <= 0 || op > 3){
+        printf("re enter option again: \n");
+        scanf("%d", &op);
+    }
+    if(op == 1){
+        /* Generate a random number initialization */
+        do
+        {
+           board();
+           if(player % 2 == 0)
+           {
+               c = check_valid(player);
+               square[c] = 'O';
+           }
+           else
+           {
+               c = check_valid(player);
+               square[c] = 'X';
+           }
+           board();
+           player++;
+           i = checkwin();
+
+        } while(i == -1);
+
+       --player;
+
+       if(i == 0) printf("Game Draw\n");
+       else if(i == 1 && player % 2 == 0) printf("Player 2 won!\n");
+       else if(i == 1 && player % 2 != 0) printf("Player 1 won!\n");
+
+    }else if(op == 2){
+        while(isEmpty(square)){
+            board();
+            bidding_board();
+            int j = checkwin();
+            if(j == 1 && player_bidding == 1){
+                printf("player 1 wins the game\n");
+                return 0;
+            }
+            else if(j == 1 && player_bidding == 2){
+                printf("player 2 win the game\n");
+                return 0;
+            }else if(j == 0){
+                printf("Game Draw \n");
+                return 0;
+            }
+        }
+    }else{
+        do
+        {
+           board();
+
+           if(player % 2 == 0)
+           {
+               c = check_valid(player);
+               square[c] = 'O';
+           }
+           else
+           {
+               c = check_valid(player);
+               square[c] = 'X';
+           }
+
+           board();
+           player++;
+           i = checkwin();
+
+        } while(i == -1);
+
+        --player;
+
+        if(i == 0) printf("Game Draw\n");
+        else if(i == 1 && player % 2 == 0) printf("Computer won!\n");
+        else if(i == 1 && player % 2 != 0) printf("Player won!\n");
+    }
+     return 0;
+}
+
+/* Show System Screen */
+void board(){
+
+    system("cls");
+    if(op == 1) printf("Player 1  (X)  -  Player 2 (O)\n\n\n");
+    else if (op == 2) printf("Player 1 (X)  -  Player 2 (O)\n           (Bidding) \n\n\n");
+    else if (op == 3) printf("Player   (X)  -  Computer (O)\n\n\n");
+
+    printf("     |     |     \n");
+    printf("  %c  |  %c  |  %c \n", square[1], square[2], square[3]);
+
+    printf("_____|_____|_____\n");
+    printf("     |     |     \n");
+
+    printf("  %c  |  %c  |  %c \n", square[4], square[5], square[6]);
+
+    printf("_____|_____|_____\n");
+    printf("     |     |     \n");
+
+    printf("  %c  |  %c  |  %c \n", square[7], square[8], square[9]);
+
+    printf("     |     |     \n\n");
+}
+int checkwin(){
+
+    if (square[1] == square[2] && square[2] == square[3])
+        return 1;
+
+    else if (square[4] == square[5] && square[5] == square[6])
+        return 1;
+
+    else if (square[7] == square[8] && square[8] == square[9])
+        return 1;
+
+    else if (square[1] == square[4] && square[4] == square[7])
+        return 1;
+
+    else if (square[2] == square[5] && square[5] == square[8])
+        return 1;
+
+    else if (square[3] == square[6] && square[6] == square[9])
+        return 1;
+
+    else if (square[1] == square[5] && square[5] == square[9])
+        return 1;
+
+    else if (square[3] == square[5] && square[5] == square[7])
+        return 1;
+
+    else if (square[1] != '1' && square[2] != '2' && square[3] != '3' &&
+        square[4] != '4' && square[5] != '5' && square[6] != '6' && square[7]
+        != '7' && square[8] != '8' && square[9] != '9')
+
+        return 0;
+    else
+        return -1;
+}
+
 int isEmpty(char arr[]){
 
     for(int i = 1; i <= 9; i++)
