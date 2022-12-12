@@ -16,6 +16,7 @@ int player_bidding = 0;
 int player1_count = 100;
 int player2_count = 100;
 int op = 0;
+int input, temp, status;
 
 /* Generate a random number structure */
 time_t t;
@@ -24,7 +25,6 @@ int main(){
     /* Generate a random number initialization */
     srand((unsigned) time(&t));
     int choice, player = 1, i = 0, c = 0;
-    int input, temp, status;
     
     system("cls");
     printf("\n\n\tTic Tac Toe\n\n");
@@ -188,13 +188,14 @@ int bidding_board(){
     int bid_player2;
     do{
         printf("player no 1 enter a number to bid on\n");
-        scanf("%d",&bid_player1);
-    }while(bid_player1>100 || bid_player1<0);
+        status = scanf("%d",&bid_player1);
+        while((temp = getchar()) != EOF && temp != '\n');
+    }while(bid_player1>100 || bid_player1<0 || status != 1);
 
     do{
         printf("player no 2 enter a number to bid on\n");
-        scanf("%d",&bid_player2);
-    }while(bid_player2>100 || bid_player1<0);
+        status = scanf("%d",&bid_player2);
+    }while(bid_player2>100 || bid_player1<0 || status != 1);
 
     if(bid_player1>bid_player2){
         //player 1 should play
@@ -230,7 +231,7 @@ void play_board(int player){
     }
     do{
         printf("player %d: please enter a position \n" ,player);
-        scanf("%d", &position);
+        status = scanf("%d", &position);
         if(square[position] == 'X'|| square[position] == 'O'){
             printf("the position is already taken\n");
             flag = 1;
@@ -255,7 +256,8 @@ void play_board(int player){
                 break;
             }
         }
-    }while(flag==1);
+        while((temp = getchar()) != EOF && temp != '\n');
+    }while(flag == 1 || status != 1);
 }
 
 
@@ -274,21 +276,23 @@ int check_valid(int p){
         else
         {
             printf("enter your choice = ");
-            scanf("%d" ,&c);
-            while(square[c] == 'X' || square[c] == 'O' || c == 0 || c > 9){
+            status = scanf("%d" ,&c);
+            while(square[c] == 'X' || square[c] == 'O' || c == 0 || c > 9 || status != 1){
+                while((temp = getchar()) != EOF && temp != '\n');
                 printf("enter valid number\n");
                 printf("enter your choice = ");
-                scanf("%d" ,&c);
+                status = scanf("%d" ,&c);
             }
         }
     }
     else{
         printf("Enter your choice = ");
-        scanf("%d" ,&c);
-        while(square[c] == 'X' || square[c] == 'O' || c == 0 || c > 9){
+        status = scanf("%d" ,&c);
+        while(square[c] == 'X' || square[c] == 'O' || c == 0 || c > 9 || status != 1){
+            while((temp = getchar()) != EOF && temp != '\n');
             printf("Enter valid number\n");
             printf("Enter your choice = ");
-            scanf("%d" ,&c);
+            status = scanf("%d" ,&c);
         }
     }
     return c;
