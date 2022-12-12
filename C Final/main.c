@@ -24,17 +24,19 @@ int main(){
     /* Generate a random number initialization */
     srand((unsigned) time(&t));
     int choice, player = 1, i = 0, c = 0;
-
+    int input, temp, status;
+    
     system("cls");
     printf("\n\n\tTic Tac Toe\n\n");
     printf("Choose mode of Game :- \n");
     printf("(1) ----->     Player Vs Player       <------ \n");
     printf("(2) -----> Player Vs Player (Bidding) <------ \n");
     printf("(3) -----> Player Vs Computer (Easy)  <------ \n");
-    scanf("%d", &op);
-    while(op <= 0 || op > 3){
+    status = scanf("%d", &op);
+    while(op <= 0 || op > 3 || status != 1){
+        while((temp = getchar()) != EOF && temp != '\n');
         printf("re enter option again: \n");
-        scanf("%d", &op);
+        status = scanf("%d", &op);
     }
     if(op == 1){
         /* Generate a random number initialization */
