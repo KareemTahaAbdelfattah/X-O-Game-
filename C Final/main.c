@@ -195,6 +195,7 @@ int bidding_board(){
     do{
         printf("player no 2 enter a number to bid on\n");
         status = scanf("%d",&bid_player2);
+        while((temp = getchar()) != EOF && temp != '\n');
     }while(bid_player2>100 || bid_player1<0 || status != 1);
 
     if(bid_player1>bid_player2){
