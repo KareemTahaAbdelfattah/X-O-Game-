@@ -175,7 +175,7 @@ int isEmpty(char arr[]){
 
     for(int i = 1; i <= 9; i++)
     {
-        if(arr[i] != 'X' || arr[i] != 'O')
+        if(arr[i] != 'X' && arr[i] != 'O')
         {
             return 1;
         }
