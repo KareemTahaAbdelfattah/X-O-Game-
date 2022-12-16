@@ -12,13 +12,18 @@ org 100h
 check proc
   mov ax,@data
   mov ds,ax  
-    
+          
+     mov si,offset BOARD     
+     mov cx,0
+          
      mov dh,1
 L0:  mov cl,dh
      mov dl,0
-L1:  mov al,BOARD[cl]
+L1:  add si,cx
+     mov al,[si]
      inc cl
-     mov bl,BOARD[cl]
+     add si,cx
+     mov bl,[Si]
      cmp al,bl
      jne next1
      inc dl
@@ -37,9 +42,11 @@ next1:
 cond2:   mov dh,1
    L2:   mov cl,dh
          mov dl,0
-   L3:   mov al,BOARD[cl]
+   L3:   add si,cx
+         mov al,[si]
          add cl,3
-         mov bl,BOARD[cl]
+         add si,cx
+         mov bl,[si]
          cmp al,bl
          jne next2
          inc dl
@@ -59,9 +66,11 @@ next2:
 cond3:   mov dh,1
    L4:   mov cl,dh
          mov dl,0
-   L5:   mov al,BOARD[cl]
-         add cl,4
-         mov bl,BOARD[cl]
+   L5:   add si,cx
+         mov al,[si]
+         add cl,4 
+         add si,cx
+         mov bl,[si]
          cmp al,bl
          jne cond4
          inc dl
@@ -72,11 +81,13 @@ cond3:   mov dh,1
          
          
 cond4:   mov dh,3
-   L4:   mov cl,dh
+   L6:   mov cl,dh
          mov dl,0
-   L5:   mov al,BOARD[cl]
-         add cl,2
-         mov bl,BOARD[cl]
+   L7:   add si,cx
+         mov al,[si]
+         add cl,2 
+         add si,cx
+         mov bl,[si]
          cmp al,bl
          jne final
          inc dl
@@ -108,11 +119,13 @@ isEmpty: mov cl,0
      E1: inc cl
          cmp cl,10
          je E2
-         mov dl,'X'
-         cmp dl,BOARD[cl]
+         mov dl,88
+         add si,cx
+         cmp dl,[si]
          je E1
-         mov dl,'O'
-         cmp dl,BOARD[cl]
+         mov dl,79
+         add si,cx
+         cmp dl,[si]
          je E1
          jmp E3
      
