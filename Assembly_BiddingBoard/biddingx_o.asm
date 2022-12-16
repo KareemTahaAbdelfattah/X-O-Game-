@@ -130,7 +130,7 @@ org  100h	; set location counter to 100h
      
   end main
 
-ret   ; return to the operating system.
+ret  
 
 
 
