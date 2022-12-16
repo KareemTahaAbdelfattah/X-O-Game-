@@ -251,7 +251,7 @@ void check_valid(){
                 c = rand() % 10;
 
            }while(square[c] == 'X' || square[c] == 'O' || c == 0);
-
+            square[c] = 'O';
         }
         else
         {
@@ -263,6 +263,7 @@ void check_valid(){
                 printf("enter your choice = ");
                 status = scanf("%d" ,&c);
             }
+            square[c]= 'X';
         }
     }
     else{
@@ -274,6 +275,8 @@ void check_valid(){
             printf("Enter your choice = ");
             status = scanf("%d" ,&c);
         }
+        if(player % 2 == 0) square[c] = 'O';
+        else square[c] = 'X';
     }
     return c;
 }
