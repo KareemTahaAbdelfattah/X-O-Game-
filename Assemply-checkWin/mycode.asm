@@ -15,7 +15,8 @@ check proc
           
      mov si,offset BOARD     
      mov cx,0
-          
+
+
      mov dh,1
 L0:  mov cl,dh
      mov dl,0
