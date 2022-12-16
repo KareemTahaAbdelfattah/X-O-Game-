@@ -15,8 +15,7 @@ char square[10] = {'0','1','2','3','4','5','6','7','8','9'};
 int player_bidding = 0;
 int player1_count = 100;
 int player2_count = 100;
-int op = 0;
-int input, temp, status;
+int op = 0, input, temp, status, player = 1;
 
 /* Generate a random number structure */
 time_t t;
@@ -24,7 +23,7 @@ time_t t;
 int main(){
     /* Generate a random number initialization */
     srand((unsigned) time(&t));
-    int choice, player = 1, i = 0, c = 0;
+    int choice, i = 0, c = 0;
     
     system("cls");
     printf("\n\n\tTic Tac Toe\n\n");
