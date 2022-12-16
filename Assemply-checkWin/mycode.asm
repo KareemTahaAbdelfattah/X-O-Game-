@@ -102,4 +102,23 @@ final:  jmp isEmpty
     endp
 
 
-  
+
+
+isEmpty: mov cl,0 
+     E1: inc cl
+         cmp cl,10
+         je E2
+         mov dl,'X'
+         cmp dl,BOARD[cl]
+         je E1
+         mov dl,'O'
+         cmp dl,BOARD[cl]
+         je E1
+         jmp E3
+     
+     
+     E2: mov ax,0
+         ret
+         
+     E3: mov ax,1
+         ret          
