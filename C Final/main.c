@@ -8,7 +8,7 @@ int check_valid(int p);
 void board();
 int isEmpty(char arr[]);
 void play_board(int); // first player is x
-int bidding_board();
+void bidding_board();
 
 char square[10] = {'0','1','2','3','4','5','6','7','8','9'};
 
@@ -182,7 +182,7 @@ int isEmpty(char arr[]){
     return 0;
 }
 
-int bidding_board(){
+void bidding_board(){
     int bid_player1;
     int bid_player2;
     do{
@@ -203,7 +203,7 @@ int bidding_board(){
         player2_count = player2_count + bid_player1;
         player_bidding = 1;
         play_board(1);
-        return 1;
+        
     }
     else if(bid_player2>bid_player1){
         //player 2 should play
@@ -211,7 +211,7 @@ int bidding_board(){
         player1_count = player1_count + bid_player2;
         player_bidding = 2;
         play_board(2);
-        return 2;
+   
     }
     else{
         // equal numbers
