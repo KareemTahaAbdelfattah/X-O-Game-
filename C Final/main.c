@@ -4,7 +4,7 @@
 #include <math.h>
 
 int checkwin();
-int check_valid(int p);
+void check_valid();
 void board();
 int isEmpty(char arr[]);
 void play_board(int); // first player is x
@@ -42,16 +42,7 @@ int main(){
         do
         {
            board();
-           if(player % 2 == 0)
-           {
-               c = check_valid(player);
-               square[c] = 'O';
-           }
-           else
-           {
-               c = check_valid(player);
-               square[c] = 'X';
-           }
+           check_valid();
            board();
            player++;
            i = checkwin();
@@ -85,18 +76,7 @@ int main(){
         do
         {
            board();
-
-           if(player % 2 == 0)
-           {
-               c = check_valid(player);
-               square[c] = 'O';
-           }
-           else
-           {
-               c = check_valid(player);
-               square[c] = 'X';
-           }
-
+           check_valid();
            board();
            player++;
            i = checkwin();
@@ -262,10 +242,10 @@ void play_board(int player){
 
 
 /*******check validation of the player or computer turn******/
-int check_valid(int p){
+void check_valid(){
     int c;
     if(op == 3){
-        if(p % 2 == 0)
+        if(player % 2 == 0)
         {
             do{
                 c = rand() % 10;
