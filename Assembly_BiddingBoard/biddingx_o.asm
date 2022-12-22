@@ -44,26 +44,28 @@ player_bidding DB ?
     ret   
     newline endp  
      
-    ;************************function to convert string to integer value ***************************
+    ;************************func to convert string to integer value ***************************
      
     ;CONVERT STRING TO NUMBER IN BX.
     proc string_to_number         
         ;MAKE SI TO POINT TO THE LEAST SIGNIFICANT DIGIT.
            
-          mov  si, offset string+1
+          mov si, offset string+1         
           mov  cl, [ si ]                                        
           mov  ch, 0 
           add  si, cx 
+
+        
         ;CONVERT STRING.
           mov  bx, 0
           mov  bp, 1 ;MULTIPLE OF 10 TO MULTIPLY EVERY DIGIT.
         repeat:         
-        ;CONVERT CHARACTER.                    
-          mov  al, [ si ] ;CHARACTER TO PROCESS.
+        ;CONVERT CHARACTER.                      
+          mov  al, [ si ] ;CHARACTER TO PROCESS. 
           sub  al, 48 
-          mov  ah, 0 ;
+          mov  ah, 0
           mul  bp ;AX*BP = DX:AX.
-          add  bx,ax          
+          add  bx,ax         
           mov  ax, bp
           mov  bp, 10
           mul  bp 
@@ -93,12 +95,23 @@ player_bidding DB ?
          INT 21H 
          ;call function to print new line between the strings   
          call newline   
-   
          
+         
+         
+        
+         
+         ;------------------------------------------
         ;CAPTURE CHARACTERS (THE NUMBER).
           mov  ah, 0Ah
           mov  dx, offset string
-          int  21h
+          int  21h 
+          
+         ;check if user enterd a letter 
+          mov di,offset string+2
+          mov dl,[di]
+          cmp dl,'A'
+          JGE label1
+
         ;------------------------------------------
           call string_to_number
           mov di,BX       
@@ -113,10 +126,7 @@ player_bidding DB ?
          label2:       
          ; display the second message for the user 
          call newline
-           
-         MOV AX,@DATA 
-         MOV DS,AX 
-                   
+
          ; load address of the string1
          LEA DX,msg2
           
@@ -130,11 +140,18 @@ player_bidding DB ?
           ;CAPTURE CHARACTERS (THE NUMBER).
           mov  ah, 0Ah
           mov  dx, offset string
-          int  21h
+          int  21h 
+          
+          ;check if the user entered a letter          
+          mov di,offset string+2
+          mov dl,[di]
+          cmp dl,'A'
+          JGE label2    
+          
         ;------------------------------------------
           call string_to_number
           call newline      
-          cmp BX,100 ; Dx contain the second player bid number
+          cmp BX,100 ; Bx contain the second player bid number
           JG label2  
           jmp check_label 
           
@@ -146,9 +163,11 @@ player_bidding DB ?
          mov dx,0 ;player2_count
           
          cmp Di,BX 
-         JG check_label2 
-         JL check_label3
+         JG check_label2 ;if di> bx means bid number of player 1 is greater
+         JL check_label3  
          
+         ;if the numbers are equal will execute those lines 
+         ;******************************************************
          ; load address of the msg3
          LEA DX,msg3
          
@@ -158,21 +177,20 @@ player_bidding DB ?
          INT 21H 
         
          Jmp label1
-         
+         ;***********************************************
           
-        check_label2: ;si>di
+        check_label2: ;if di>bx 
         sub AX,di
         add AX,di 
         mov player_bidding,1
         ;here we need to call board function to play   
         
          
-        check_label3:
+        check_label3: ;if di<bx
         sub dx,BX
         add AX,BX  
         mov player_bidding,2  
         ;here we need to call board function to play   
-        
 
        
 
