@@ -3,9 +3,6 @@ org 100h
 .data
 
 
-
-enter_choice db 'Enter your Choice = ',0dh,0ah,'$' 
-enter_valid db 'Enter Valid number',0dh,0ah,'$'
 Tic_tac db 'Tic Tac Toe',0dh,0ah,'$'  
 choose_mode db 'Choose mode of Game :- ',0dh,0ah,'$'  
 playervsplayer db '(1) ----->     Player Vs Player       <------',0dh,0ah,'$' 
@@ -132,9 +129,9 @@ do:
     mov si,offset player
     mov BYTE PTR [si], al 
     
-    ;jmp checkwin() then take ret value at cx
+    ;jmp checkwin() then take ret value at ax
     
-    cmp cx, -1
+    cmp ax, -1
     je do           ; while loop
     
     mov al, player  
@@ -166,22 +163,46 @@ R9:
     
     
 Else: 
+     ;jmp isEmpty()        ; get value if 1 or 0
+     cmp ax, 0
+     je bot
+     
+     ;jmp Board()
+     ;jmp Bidding_Board()
+     
+     ;jmp checkwin() then take ret value at ax
+
+     cmp ax, 1
+     je Print
+     mov ah,09h      ; print phrase
+     mov dx, offset Draw 
+     int 21h
+     jmp bot   
+
+
+
+Print:
+    mov al, playerbidding
+    cmp al, 2
+    je  S1
+    mov ah,09h      ; print phrase
+    mov dx, offset Player1 
+    int 21h    
+    jmp bot
+    
+    
+S1:
+    mov ah,09h      ; print phrase
+    mov dx, offset Player2 
+    int 21h    
+    jmp bot  
+    
     
 
-
-
-
-
-       
-       
-       
-      
-    jmp bot   
+Else_If:
+ 
     
-    
-
-Else_If: 
-
+do2:    
     ;jmp Board()
     ;jmp check_valid() 
     ;jmp Board()
@@ -194,7 +215,7 @@ Else_If:
     ;jmp checkwin() then take ret value at cx
     
     cmp cx, -1
-    je do           ; while loop
+    je do2           ; while loop
     
     mov al, player  
     sub al, 1
