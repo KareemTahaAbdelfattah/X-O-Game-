@@ -7,8 +7,8 @@ org  100h	; set location counter to 100h
   msg2 DB  'player no 2 enter a number to bid on', '$'
   msg3 DB  'bidding numbers are equal please re enter the numbers','$'
  string db 5 ;MAX NUMBER OF CHARACTERS ALLOWED (4).
-       db ? ;NUMBER OF CHARACTERS ENTERED BY USER.
-       db 5 dup (?) ;CHARACTERS ENTERED BY USER. 
+        db ? ;NUMBER OF CHARACTERS ENTERED BY USER.
+        db 5 dup (?) ;CHARACTERS ENTERED BY USER. 
 
 player_bidding DB ?
 
@@ -44,12 +44,13 @@ player_bidding DB ?
     ret   
     newline endp  
      
-    ;************************func to convert string to integer value ***************************
+    ;************************function to convert string to integer value ***************************
      
     ;CONVERT STRING TO NUMBER IN BX.
-    proc string2number         
+    proc string_to_number         
         ;MAKE SI TO POINT TO THE LEAST SIGNIFICANT DIGIT.
-          mov  si, offset string + 1 ;
+           
+          mov  si, offset string+1
           mov  cl, [ si ]                                        
           mov  ch, 0 
           add  si, cx 
@@ -69,10 +70,10 @@ player_bidding DB ?
           mov  bp, ax  
         ;CHECK IF WE HAVE FINISHED.
           dec  si 
-          loop repeat 
+          loop repeat   ; Cx is used as counter by default in loop and will be decremneted each time the loop is repeated
         
       ret 
-    string2number endp  
+    string_to_number endp  
     
    
     ;bidding function
@@ -92,21 +93,17 @@ player_bidding DB ?
          INT 21H 
          ;call function to print new line between the strings   
          call newline   
+   
          
-         
-         
-         ;*********************** new code ******************************************* 
-         
-                  ;------------------------------------------
         ;CAPTURE CHARACTERS (THE NUMBER).
           mov  ah, 0Ah
           mov  dx, offset string
           int  21h
         ;------------------------------------------
-          call string2number
+          call string_to_number
           mov di,BX       
-          cmp di,101 ; si contain the first player bid number
-          JGE label1  
+          cmp di,100 ; si contain the first player bid number
+          JG label1  
           jmp label2  
              
              
@@ -135,10 +132,10 @@ player_bidding DB ?
           mov  dx, offset string
           int  21h
         ;------------------------------------------
-          call string2number
+          call string_to_number
           call newline      
-          cmp BX,101 ; Dx contain the second player bid number
-          JGE label2  
+          cmp BX,100 ; Dx contain the second player bid number
+          JG label2  
           jmp check_label 
           
          
