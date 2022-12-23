@@ -143,10 +143,12 @@ player_bidding DB ?
           int  21h 
           
           ;check if the user entered a letter          
-          mov di,offset string+2
-          mov dl,[di]
+          
+          mov si,offset string+2
+          mov dl,[si]
           cmp dl,'A'
-          JGE label2    
+         
+          JGE label2  
           
         ;------------------------------------------
           call string_to_number
