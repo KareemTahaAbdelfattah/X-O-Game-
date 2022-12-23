@@ -328,3 +328,9 @@ NNEqual2:
     int 21h   
        
     jmp bot
+bot:
+    
+ 
+
+.exit
+END
