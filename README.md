@@ -10,5 +10,5 @@ Bidding Tic-Tac-Toe is a modified version of the regular Tic-Tac-Toe where playe
 # Tools used:
 in c stage : we used codeblocks and VScode.
 in assembly stage: we used simulator 8086 (emu8086).
-### tutorial of the game:
+### video of the game:
 https://youtu.be/BB_Td_RGjQE
