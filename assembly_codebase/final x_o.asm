@@ -667,7 +667,7 @@ RANDSTART:
 
     xor dx,dx
     
-    mov cx,6
+    mov cx,9
     
     div cx ; here dx contains the remainder of the division - from 0 to 9
     
