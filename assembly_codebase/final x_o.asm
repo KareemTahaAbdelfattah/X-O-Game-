@@ -40,7 +40,7 @@ counter dw 0
 letter db  'X'
 position db 0
 flag db 0   
- 
+JUMP db 0 
 
 empty_line db '     |     |     ',0Ah,0DH,'$'   ;0DH moves to the curser to the beginning
                                                                                                                   
@@ -172,30 +172,28 @@ do:
     mov BYTE PTR [si], al 
     
     call check
-    ;mov DX,AX 
-    ;mov ah,02H
-    ;int 21H
-    mov si,offset vc
-    mov BYTE PTR [si], al
-    ;mov BX,DX 
-    cmp vc, -1
+
+    cmp ax, -1
     je do           ; while loop
+    
+    mov cl, al
     
     mov al, player  
     sub al, 1
     mov si,offset player
     mov BYTE PTR [si], al   
     
-    cmp vc, 0
+    cmp cl, 0
     je Equal
     
-    mov dl, al
-    mov ax, 0
+    mov dx, 0
+    mov ah, 0
+    mov dl, 2
     div dl
     cmp ah, 0
     je NEqual
     cmp ah, 0
-    jne NNEqual    
+    jne NNEqual   
     
     
     
@@ -229,7 +227,7 @@ Else2:
      mov ah,09h      ; print phrase
      mov dx, offset Draw 
      int 21h
-     jmp bot   
+     jmp bot    
 
 
 
@@ -237,6 +235,12 @@ Print:
     mov al, playerbidding
     cmp al, 2
     je  S1
+    
+    mov ax, 13h     ; Clear Screen
+    int 10h 
+    call board
+    
+    
     mov ah,09h      ; print phrase
     mov dx, offset Player1 
     int 21h    
@@ -244,6 +248,10 @@ Print:
     
     
 S1:
+
+    mov ax, 13h     ; Clear Screen
+    int 10h 
+    call board
     mov ah,09h      ; print phrase
     mov dx, offset Player2 
     int 21h    
@@ -260,14 +268,14 @@ do2:
          
     call board 
     
-    
+   
+P1:   
     call check_valid  
-    
-    
-    
     mov ax, 13h     ; Clear Screen
     int 10h  
     call board
+    
+P2:    
     mov ax, 13h     ; Clear Screen
     int 10h 
     
@@ -281,17 +289,22 @@ do2:
     cmp ax, -1
     
     je do2           ; while loop
-    
+     
+    mov cl, al 
+     
     mov al, player  
     sub al, 1
     mov si,offset player
     mov BYTE PTR [si], al   
     
-    cmp ax, 0
+    
+    
+    cmp cl, 0
     je Equal
     
-    mov dl, al
-    mov ax, 0
+    mov dx, 0
+    mov ah, 0
+    mov dl, 2
     div dl
     cmp ah, 0
     je NEqual2
@@ -630,6 +643,161 @@ final:  jmp isEmpty
     mov ax,1
     neg ax 
     ret
+
+
+
+check_valid:  
+    mov ax, 0
+    mov al, option
+    cmp al, 3  
+    jne C4
+    mov al, player
+    mov bl, 2
+    div bl
+    cmp ah, 0
+    jne C3 
+    
+RANDGEN:        ; generate a rand no using the system time
+RANDSTART: 
+
+    MOV AH, 00h  ; interrupts to get system time        
+    INT 1AH      ; CX:DX now hold number of clock ticks since midnight      
+                 ; lets just take the lower bits of DL for a start..
+    mov ax,dx
+
+    xor dx,dx
+    
+    mov cx,6
+    
+    div cx ; here dx contains the remainder of the division - from 0 to 9
+    
+    add dx,1
+    
+    MOV bl, 'X'
+    mov cx, 0  
+    mov cl, dl 
+    mov si, offset SQUARE
+    add si, cx
+    mov al, [si]
+    cmp al, bl
+    je RANDSTART
+    
+    MOV bl, 'O'
+    mov cx, 0
+    mov cl, dl      
+    mov si, offset SQUARE
+    add si, cx 
+    mov al, [si]
+    cmp al, bl
+    je RANDSTART
+       
+
+    mov BYTE PTR [si], 'O'
+    
+    ret
+    
+    
+  
+C31:
+    MOV dl, 10
+    MOV ah, 02h
+    INT 21h
+    MOV dl, 13
+    MOV ah, 02h
+    INT 21h
+    mov ah,09h 
+    mov dx, offset enter_valid 
+    int 21h 
+    jmp C3             
+          
+C3: 
+    mov ah,09h 
+    mov dx, offset enter_choice 
+    int 21h
+    MOV AH,01h      
+    INT 21h
+    sub al, 49 
+    cmp al, 0
+    jb C31
+    cmp al, 8
+    ja C31
+      
+    mov bl, 'O'
+    mov cx, 0  
+    mov cl, al
+    mov si, offset SQUARE
+    add si, cx
+    mov al, [si]
+    cmp al, bl
+    je C31
+    
+    mov bl, 'X'
+    mov si, offset SQUARE
+    add si, cx
+    mov al, [si]
+    cmp al, bl
+    je C31     
+    
+    
+    mov BYTE PTR [si], 'X'
+    
+    ret
+    
+
+C41:
+    MOV dl, 10
+    MOV ah, 02h
+    INT 21h
+    MOV dl, 13
+    MOV ah, 02h
+    INT 21h
+    mov ah,09h 
+    mov dx, offset enter_valid 
+    int 21h 
+    jmp C4
+             
+C4:
+    mov ah,09h 
+    mov dx, offset enter_choice 
+    int 21h
+    MOV AH,01h      
+    INT 21h
+    sub al, 49
+    cmp al, 0
+    jb C41
+    cmp al, 8
+    ja C41
+    
+    mov bl, 'O'
+    mov cx, 0  
+    mov cl, al
+    mov si, offset SQUARE
+    add si, cx
+    mov al, [si]  
+    cmp al, bl
+    je C41
+    
+    mov bl, 'X'
+    mov si, offset SQUARE
+    add si, cx
+    mov al, [si]
+    cmp al, bl
+    je C41  
+
+    mov ax, 0  
+    mov al, player
+    mov dx, 0
+    mov dl, 2
+    div dl
+    cmp ah, 0
+    jne C44 
+    mov BYTE PTR [si], 'O'
+    ret
+
+C44:
+    mov BYTE PTR [si], 'X'       
+    ret
+
 
 
 isEmpty: mov si,offset SQUARE
