@@ -414,7 +414,7 @@ proc string_to_number
          ;call function to print new line between the strings   
          call newline   
          
-         
+
          
          ;*********************** new code ******************************************* 
          
@@ -445,7 +445,7 @@ proc string_to_number
 ;         MOV AX,@DATA 
 ;         MOV DS,AX 
 ;                   
-         ; load address of the string1
+         ; load address of the string1                              
          LEA DX,msg2
           
          ;output the string
@@ -476,13 +476,29 @@ proc string_to_number
        ;***************** check who has the right to play ****************** if else statement***********
          ;Di =bid_player1 BX=bid_player2 
          check_label:
-         mov AX,0 ;player1_count
-         mov dx,0 ;player2_count
+;         mov AX,10 ;player1_count
+;         mov dx,100 ;player2_count  
+         
+      
+         mov al,player1count
+         mov ah,0
+         cmp ax,di
+         JL check_label3
+         JG check_second  
+         jmp compar
           
+         check_second: 
+         mov cl,player2count
+         mov ch,0
+         cmp cx,bx
+         Jl check_label2
+         jmp compar
+         
+         compar:
          cmp Di,BX 
          JG check_label2 ;if di> bx means bid number of player 1 is greater
          JL check_label3  
-         
+
          ;if the numbers are equal will execute those lines 
          ;******************************************************
          ; load address of the msg3
@@ -496,24 +512,25 @@ proc string_to_number
          Jmp label1
          ;***********************************************
           
-        check_label2: ;if di>bx 
-        sub AX,di
-        add AX,di 
-
-
+        check_label2: ;if di>bx
+        mov dx,di
+        mov dh,0  
+        sub player1count,dl  
+        add player2count,dl 
         mov si,offset playerbidding
         mov BYTE PTR [si], 1
           
         ;here we need to call board function to play   
         mov si,offset player
         mov BYTE PTR [si], 1
+        call play_board  
         
-        call play_board 
-      
-         ret
+        ret  
+         
         check_label3: ;if di<bx
-        sub dx,BX
-        add AX,BX  
+        sub player2count ,Bl  
+        add player1count,bl
+        
         mov si,offset playerbidding
         mov BYTE PTR [si],2
             
@@ -521,7 +538,6 @@ proc string_to_number
          mov si,offset player
          mov BYTE PTR [si], 2
          call play_board 
-         
 
  
       ret 
