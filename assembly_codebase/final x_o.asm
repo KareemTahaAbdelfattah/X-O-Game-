@@ -537,7 +537,7 @@ check proc
      mov cx,0
           
      mov dh,0
-L0:  mov si,offset SQUARE
+L0:  mov si,offset SQUARE   ;checks if one won in a row
      mov cl,dh
      mov dl,0
 L1:  mov si,offset SQUARE
@@ -555,13 +555,13 @@ L1:  mov si,offset SQUARE
      jmp R1 
            
  
-next1:
+next1:              ;if a raw fails loops back to the next raw
       cmp dh,6
       je cond2
       add dh,3
       jmp L0
 
-cond2:   mov si,offset SQUARE 
+cond2:   mov si,offset SQUARE       ;checks if one won in a column
          mov dh,0 
    L2:   mov si,offset SQUARE
          mov cl,dh
@@ -581,14 +581,14 @@ cond2:   mov si,offset SQUARE
          jmp R1 
            
  
-next2:
+next2:           ;if a column fails loops back to the next column
       cmp dh,2
       je cond3
       inc dh
       jmp L2 
       
       
-cond3:   mov si,offset SQUARE
+cond3:   mov si,offset SQUARE  ;checks if one won in right diagonal
          mov dh,0 
    L4:   mov si,offset SQUARE
          mov cl,dh
@@ -608,7 +608,7 @@ cond3:   mov si,offset SQUARE
          jmp R1
          
          
-cond4:   mov si,offset SQUARE
+cond4:   mov si,offset SQUARE    ;checks if one won in left diagonal
          mov dh,2
    L6:   mov si,offset SQUARE
          mov cl,dh
@@ -628,7 +628,7 @@ cond4:   mov si,offset SQUARE
          jmp R1 
 
 
-final:  jmp isEmpty
+final:  jmp isEmpty   ;handles if no one won rather a draw or complete game
    f1:  cmp ax,1
         je  R3
         jmp R2    
