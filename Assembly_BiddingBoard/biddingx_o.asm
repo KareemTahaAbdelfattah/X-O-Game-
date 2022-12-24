@@ -96,26 +96,23 @@ player_bidding DB ?
          ;call function to print new line between the strings   
          call newline   
          
+
          
+         ;*********************** new code ******************************************* 
          
-        
-         
-         ;------------------------------------------
+                  ;------------------------------------------
         ;CAPTURE CHARACTERS (THE NUMBER).
           mov  ah, 0Ah
           mov  dx, offset string
-          int  21h 
-          
-         ;check if user enterd a letter 
+          int  21h  
           mov di,offset string+2
           mov dl,[di]
           cmp dl,'A'
           JGE label1
-
         ;------------------------------------------
           call string_to_number
           mov di,BX       
-          cmp di,100 ; si contain the first player bid number
+          cmp di,100 ; Di contain the first player bid number
           JG label1  
           jmp label2  
              
@@ -126,8 +123,11 @@ player_bidding DB ?
          label2:       
          ; display the second message for the user 
          call newline
-
-         ; load address of the string1
+;           
+;         MOV AX,@DATA 
+;         MOV DS,AX 
+;                   
+         ; load address of the string1                              
          LEA DX,msg2
           
          ;output the string
@@ -142,14 +142,11 @@ player_bidding DB ?
           mov  dx, offset string
           int  21h 
           
-          ;check if the user entered a letter          
-          
           mov si,offset string+2
           mov dl,[si]
           cmp dl,'A'
          
-          JGE label2  
-          
+          JGE label2 
         ;------------------------------------------
           call string_to_number
           call newline      
@@ -161,13 +158,29 @@ player_bidding DB ?
        ;***************** check who has the right to play ****************** if else statement***********
          ;Di =bid_player1 BX=bid_player2 
          check_label:
-         mov AX,0 ;player1_count
-         mov dx,0 ;player2_count
+;         mov AX,10 ;player1_count
+;         mov dx,100 ;player2_count  
+         
+      
+         mov al,player1count
+         mov ah,0
+         cmp ax,di
+         JL check_label3
+         JG check_second  
+         jmp compar
           
+         check_second: 
+         mov cl,player2count
+         mov ch,0
+         cmp cx,bx
+         Jl check_label2
+         jmp compar
+         
+         compar:
          cmp Di,BX 
          JG check_label2 ;if di> bx means bid number of player 1 is greater
          JL check_label3  
-         
+
          ;if the numbers are equal will execute those lines 
          ;******************************************************
          ; load address of the msg3
@@ -181,19 +194,32 @@ player_bidding DB ?
          Jmp label1
          ;***********************************************
           
-        check_label2: ;if di>bx 
-        sub AX,di
-        add AX,di 
-        mov player_bidding,1
+        check_label2: ;if di>bx
+        mov dx,di
+        mov dh,0  
+        sub player1count,dl  
+        add player2count,dl 
+        mov si,offset playerbidding
+        mov BYTE PTR [si], 1
+          
         ;here we need to call board function to play   
+        mov si,offset player
+        mov BYTE PTR [si], 1
+        call play_board  
         
+        ret  
          
         check_label3: ;if di<bx
-        sub dx,BX
-        add AX,BX  
-        mov player_bidding,2  
+        sub player2count ,Bl  
+        add player1count,bl
+        
+        mov si,offset playerbidding
+        mov BYTE PTR [si],2
+            
         ;here we need to call board function to play   
-
+         mov si,offset player
+         mov BYTE PTR [si], 2
+         call play_board 
        
 
  
